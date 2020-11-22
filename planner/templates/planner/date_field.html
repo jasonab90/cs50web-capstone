@@ -1,0 +1,39 @@
+{% load static %}
+<div class="form-row my-3">
+			<div class="form-col mr-2">
+				<input type="hidden" name="current_month" value="{{ current_month }}" />
+			<select class="custom-select" name="month">
+			{% for month in months %}
+
+				{% if month.0 != 0 %}
+
+					{% if month.0 == add_date.month %}
+					<option value="{{ month.0 }}" selected="selected">{{ month.1 }}</option>
+					{% else %}
+					<option value="{{ month.0 }}">{{ month.1 }}</option>
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+				</select>
+			</div>
+			<div class="form-col mr-2">
+			<select class="custom-select" name="day">
+				{% for day in add_date.day_range %}
+					{% if day == add_date.next_day %}
+						<option value="{{ day }}" selected="selected">{{ day }}</option>
+					{% else %}
+						<option value="{{ day }}">{{ day }}</option>
+					{% endif %}
+					
+				{% endfor %}
+			</select>
+			</div>
+			<div class="form-col mr-2">
+			<select class="custom-select" name="year">
+				{% for year in add_date.years %}
+				<option value="{{ year }}">{{ year }}</option>
+				{% endfor %}
+			</select>
+			</div>
+</div>
+<script src="{% static 'date_field.js' %}"></script>

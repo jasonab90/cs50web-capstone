@@ -1,0 +1,43 @@
+{% extends 'planner/layout.html' %}
+{% load static %}
+{% block title %}Edit Card{% endblock %}
+{% block body %}
+<div class="container">
+	{% if message %}
+	<div class="{{ alert_type }} mt-1">
+	{{ message }}
+	</div>
+	{% endif %}
+	<h1>Edit Card</h1>
+	<form action="{% url 'edit_card' id=card.id %}" method="POST">
+		{% csrf_token %}
+		<div class="form-row my-3">
+			<input type="text" class="form-control" name="title" placeholder="Card Title" autocomplete="off" value="{{ card.title }}"/>
+		</div>
+		<div class="form-row my-3">
+			<input type="text" class="form-control" name="description" placeholder="Card Description" autocomplete="off" value="{{ card.description }}"/>
+		</div>
+		{% if dates|length > 0 %}
+		<div class="form-row my-3">
+			<div class="col-sm-10">
+				<legend class="col-form-label">Edit Dates</legend>
+			</div>
+			<div class="col-sm-10">
+			{% for date in dates %}
+				<div class="form-check">
+					<input type="checkbox" name="checkbox" value="{{ date.id }}" class="form-check-input" checked="checked"/><label class="form-check-label" for="add-date">{{ date.date }}</label>
+				</div>
+			{% endfor %}
+			</div>
+		</div>
+		{% endif %}
+			<div class="form-row my-3">
+			<input type="submit" class="btn btn-primary" name="submit" value="Edit Card" />
+		</div>
+	</form>
+</div>
+
+
+
+<script src="{% static 'card_add.js' %}"></script>
+{% endblock %}

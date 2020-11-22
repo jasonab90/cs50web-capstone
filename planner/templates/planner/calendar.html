@@ -1,0 +1,102 @@
+{% extends 'planner/layout.html' %}
+{% load static %}
+{% block title %}Calendar{% endblock %}
+{% block body %}
+<div class="container">
+	<div class="row">
+		<div class="col text-left">
+			<h1><a href="/calendar/{{ previous.0 }}/{{ previous.1 }}"><<</a></h1>
+		</div>
+		<div class="col">
+			<h1 class="text-center"> {{ month}} {{ selected_year }}</h1>
+		</div>
+		<div class="col text-right align-middle">
+			<h1><a href="/calendar/{{ next.0 }}/{{ next.1 }}">>></a></h1>
+		</div>
+<div class="table">
+<div class="row d-none d-sm-flex bg-dark text-white">
+	<div class="col-sm p-3 text-center font-weight-bold">Sunday</div>
+	<div class="col-sm p-3 text-center font-weight-bold">Monday</div>
+	<div class="col-sm p-3 text-center font-weight-bold">Tuesday</div>
+	<div class="col-sm p-3 text-center font-weight-bold">Wednesday</div>
+	<div class="col-sm p-3 text-center font-weight-bold">Thursday</div>
+	<div class="col-sm p-3 text-center font-weight-bold">Friday</div>
+	<div class="col-sm p-3 text-center font-weight-bold">Saturday</div>
+</div>
+{% for day in days %}
+	
+	{% if day.4 == "new" %}
+		<div class="row border border-right-0 border-top-0">
+	{% endif %}
+	{% if day.1 != selected_month %}
+		<div class ="day col-md d-none d-sm-inline-block text-muted bg-light border border-top-0">
+			{{ day.2 }}
+			<small class="col d-md-none text-right">{{ day.5 }}</small>
+		</div>
+	{% else %}
+		{% if day.0 == today.0 and day.1 == today.1 and day.2 == today.2 %}
+		<div class="day col-md border border-top-0 border-left-0 bg-secondary text-white">
+			<span>
+			<strong>
+				<a href="/date/{{selected_year}}/{{selected_month}}/{{day.2}}" class="text-white">{{ day.2 }}</a>
+			</strong>
+			<small class="col d-md-none text-right"><a class="text-white" href="/date/{{selected_year}}/{{selected_month}}/{{day.2}}">{{ day.5 }}</a></small>
+			{% if day.6 > 0 %}
+				<div class="dropdown text-center d-none d-md-block">
+					<a class="btn btn-secondary dropdown-toggle" href="#" role="button" name="date-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ day.6 }} {% if day.6 == 1 %} card {% else %} cards{% endif %}</a>
+
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						{% for card in day.7 %}
+							<a class="dropdown-item" href="{% url 'view_card' id=card.card.id %}" class="text-truncate">{{ card.card.title }}</a>
+						{% endfor %}
+					</div>
+				</div>
+				<span class="col d-md-none text-center">
+						{{ day.6 }} items
+				</span>
+			{% endif %}
+			</span>
+		</div>
+		{% else %}
+		<div class="day col-md border border-top-0 border-left-0">
+			<span>
+				<a href="/date/{{selected_year}}/{{selected_month}}/{{day.2}}">{{ day.2 }}</a>
+			</span>
+			<small class="col d-md-none text-right"><a href="/date/{{selected_year}}/{{selected_month}}/{{day.2}}">{{ day.5 }}</a></small>
+			{% if day.6 > 0 %}
+				<!-- <span class="row-md col-md d-md-none text-center">
+						{{ day.6 }} items
+				</span>
+				<span class="row-md col-md text-center d-none d-md-block text-truncate" style="max-width:80%">
+						{% for card in day.7 %}
+						<small class="d-inline-block">{{ card.card.title }}</small>
+						{% endfor %}
+				</span> -->
+				<div class="dropdown text-center d-none d-md-block">
+					<a class="btn btn-secondary dropdown-toggle" href="#" role="button" name="date-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ day.6 }} {% if day.6 == 1 %} card {% else %} cards{% endif %}</a>
+
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						{% for card in day.7 %}
+							<a class="dropdown-item" href="{% url 'view_card' id=card.card.id %}" class="text-truncate">{{ card.card.title }}</a>
+						{% endfor %}
+					</div>
+				</div>
+
+				<span class="col d-md-none  text-center">
+						{{ day.6 }} items
+				</span>
+
+			{% endif %}
+			
+		</div>
+		{% endif %}
+	{% endif %}
+
+	{% if day.4 == "end" %}
+		</div>
+	{% endif %}
+{% endfor %}
+</div>
+</div>
+<script src="{% static 'planner.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'planner/layout.html' %}
+{% load static %}
+{% block title %}Add Card{% endblock %}
+{% block body %}
+<div class="container">
+	{% if message %}
+	<div class="{{ alert_type }} mt-1">
+	{{ message }}
+	</div>
+	{% endif %}
+	<h1>Add Card</h1>
+	<form action="{% url 'add_card' %}" method="POST">
+		{% csrf_token %}
+		<div class="form-row my-3">
+			<input type="text" class="form-control" name="title" placeholder="Card Title" autocomplete="off" autofocus/>
+		</div>
+		<div class="form-row my-3">
+			<input type="text" class="form-control" name="description" placeholder="Card Description" autocomplete="off"/>
+		</div>
+		<div class="form-row my-3">
+			<div class="form-col form-check">
+				{% if check_date == 1 %}
+				<input type="checkbox" id="add-date" name="add_date" class="form-check-input" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="add-date" name="add_date" class="form-check-input"/>
+				{% endif %}
+				<label class="form-check-label" for="add-date">Associate Card with a Date</label>
+			</div>
+		</div>
+		<div class="form-row my-3">
+			<div class="form-col mr-2">
+				<input type="hidden" name="current_month" value="{{ current_month }}" />
+			{% if check_date == 1 %}
+			<select class="custom-select" name="month">
+			{% else %}
+			<select class="custom-select" name="month" disabled>
+			{% endif %}
+			{% for month in months %}
+
+				{% if month.0 != 0 %}
+
+					{% if month.0 == current_month %}
+					<option value="{{ month.0 }}" selected="selected">{{ month.1 }}</option>
+					{% else %}
+					<option value="{{ month.0 }}">{{ month.1 }}</option>
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+				</select>
+			</div>
+			<div class="form-col mr-2">
+			{% if check_date == 1 %}
+			<select class="custom-select" name="day">
+			{% else %}
+			<select class="custom-select" name="day" disabled>
+			{% endif %}	
+				{% for day in current_days %}
+					{% if day == next_day %}
+						<option value="{{ day }}" selected="selected">{{ day }}</option>
+					{% else %}
+						<option value="{{ day }}">{{ day }}</option>
+					{% endif %}
+					
+				{% endfor %}
+			</select>
+			</div>
+			<div class="form-col mr-2">
+			{% if check_date == 1 %}
+			<select class="custom-select" name="year">
+			{% else %}
+			<select class="custom-select" name="year" disabled>
+			{% endif %}
+				{% for year in years %}
+				<option value="{{ year }}">{{ year }}</option>
+				{% endfor %}
+			</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<input type="submit" class="btn btn-primary" name="submit" value="Add Card" disabled/>
+	</form>
+</div>
+<script src="{% static 'card_add.js' %}"></script>
+{% endblock %}

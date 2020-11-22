@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>{% block title %}Planner{% endblock %}</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<link href="{% static 'styles.css' %}" rel="stylesheet">
+		<script src="https://kit.fontawesome.com/c422b46f5c.js" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-md navbar-light bg-light">
+			<a class="navbar-brand" href="/">Planner</a>
+			<button class="navbar-toggler navbar-right" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbar">
+				<ul class="navbar-nav mr-auto ">
+					{% if user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'profile' %}">{{ user.username }}</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'logout' %}">Logout</a>
+					</li>
+					<li class="nav-item">
+						<a href="{% url 'calendar' %}" class="nav-link" name="calendar">Calendar</a>
+					</li>
+					<li class="nav-item">
+						<a href="{% url 'add_card' %}" class="nav-link" name="add-card">Add Card</a>
+					</li>
+			
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">View Card</a>
+
+						<div class="dropdown-menu p-3 text-left">
+							<input class="form-control p-3" id="search-cards" type="text" placeholder="Search Cards" />
+							{% for card in cards %}
+							{% if card.archived == False %}
+							<a class="dropdown-item" href="{% url 'view_card' id=card.id %}">{{ card.title }}</a>
+							{% endif %}
+							{% endfor %}
+						</div>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'login' %}">Login</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'register' %}">Register</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</nav>
+		<div class="body">
+			{% block body %}
+			{% endblock %}
+		</div>
+		<script src="{% static 'layout.js' %}"></script>
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+	</body>
+</html>

@@ -1,0 +1,22 @@
+{% extends 'planner/layout.html' %}
+{% load static %}
+{% block body %}
+
+<div class="container">
+	<h2 class="text-center">Welcome, {{ user.username }}!</h2>
+		<ul class="list-group">
+	{% for card in cards %}
+		{% if card.archived == False %}
+		{% if card.favorite == True %}
+			<li class="list-group-item list-group-item-success"><a href="{% url 'view_card' id=card.id %}">{{ card.title }}</a><span class="float-right font-weight-bold">Favorited</span></li>
+			{% else %}
+				<li class="list-group-item"><a href="{% url 'view_card' id=card.id %}">{{ card.title }}</a></li>
+			{% endif %}
+		{% else %}
+			<li class="list-group-item list-group-item-warning"><a href="{% url 'view_card' id=card.id %}" class="font-italic">{{ card.title }}</a><span class="float-right font-italic">Archived</span></li>
+		{% endif %}
+	{% endfor %}
+		</ul>
+</div>
+<script src="{% static 'planner.js' %}"></script>
+{% endblock %}

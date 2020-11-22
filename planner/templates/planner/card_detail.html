@@ -1,0 +1,153 @@
+{% load static %}
+
+	<div name="message" style="display:none;"></div>
+	{% if card.archived == True %}
+					<div class="alert alert-warning" role="alert">
+						This card is archived.
+					</div>
+					{% endif %}
+	<div class="card mt-3">
+		<div class="card-header border-bottom-0">
+			<div class="row">
+				<div class="col">
+					{% if card.archived == False %}
+					<h1>{{ card.title }}</h1>
+					{% else %}
+					<h1 class="font-italic">{{ card.title }}</h1>
+					{% endif %}
+					<h6>{{ card.description }}</h6>
+					
+				</div>
+					<div class="col text-right" name = "card-menu">
+						<!-- <a href="#" class="btn btn-primary btn-sm">Favorite</a>
+						FIX the swapping between stars so it doesn't move
+						<a href="#"><i class="far fa-star" name="mark-favorite"></i></a>
+						<a href="#"><i class="fas fa-star" name="mark-unfavorite" style="display:none"></i></a>
+						<a href="#"><i class="fas fa-pencil-alt" name="edit"></i></a> -->
+						<div class="dropdown">
+							<!-- <i href="#" class="dropdown-toggle fas fa-bars" data-toggle="dropdown"></i> -->
+							<svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-gear dropdown-toggle fas fa-bars" fill="currentColor" xmlns="http://www.w3.org/2000/svg" data-toggle="dropdown" style="cursor:pointer">
+								  <path fill-rule="evenodd" d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 0 1 4.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 0 1-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 0 1 1.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 0 1 2.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 0 1 2.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 0 1 1.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 0 1-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 0 1 8.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 0 0 1.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 0 0 .52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 0 0-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 0 0-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 0 0-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 0 0-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 0 0 .52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 0 0 1.255-.52l.094-.319z"/>
+								  <path fill-rule="evenodd" d="M8 5.754a2.246 2.246 0 1 0 0 4.492 2.246 2.246 0 0 0 0-4.492zM4.754 8a3.246 3.246 0 1 1 6.492 0 3.246 3.246 0 0 1-6.492 0z"/>
+								</svg>
+							<div class="dropdown-menu">
+								<a href="{% url 'edit_card' id=card.id %}" class="dropdown-item">Edit Card</a>
+								{% if card.favorite == False and card.archived == False %}
+								<button class="dropdown-item" name="favorite" value="{{ card.id }}">Favorite Card</button>
+								<button class="dropdown-item" name="unfavorite" style="display:none" value="{{ card.id }}">Unfavorite Card</button>
+								{% elif card.archived == False %}
+								<button class="dropdown-item" name="favorite" style="display:none" value="{{ card.id }}">Favorite Card</button>
+								<button class="dropdown-item" name="unfavorite" value="{{ card.id }}">Unfavorite Card</button>
+								{% endif %}
+								<a href="{% url 'copy_card' id=card.id %}" class="dropdown-item">Copy Card</a>
+								{% if card.archived == False %}
+								<a href="#date" class="dropdown-item" data-toggle="modal">Add Date</a>
+								{% endif %}
+								{% if card.hide_completed == False %}
+								<a class="dropdown-item" name="hide-completed" href="{% url 'hide_completed' id=card.id %}">Hide Completed Items</a>
+								{% else %}
+								<a class="dropdown-item" name="show-completed"  href="{% url 'show_completed' id=card.id %}">Show Completed Items</a>
+								{% endif %}
+								<div class="dropdown-divider"></div>
+								{% if card.archived == False %}
+								<button class="dropdown-item text-danger" name="archive" value="{{ card.id }}">Archive Card</button>
+								<button class="dropdown-item text-success" name="unarchive" style="display:none;" value="{{ card.id }}">Restore Card</button>
+								{% else %}
+								<button class="dropdown-item text-danger" name="archive" style="display:none;" value="{{ card.id }}">Archive Card</button>
+								<button class="dropdown-item text-success" name="unarchive" value="{{ card.id }}">Restore Card</button>
+								{% endif %}
+
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="card-body border">
+	<form action="{% url 'view_card' id=card.id %}" method="POST">
+		{% csrf_token %}
+		<input type="hidden" name="card" value="{{ card.id }}" />
+		<div class="form-row">
+			<div class="col-lg-11 col-md-9 col-6">
+				<input type="text" name="item" placeholder="Add Item" class="form-control" autocomplete="off" autofocus />
+			</div>
+			<div class="col-lg-1 col-md-3 col-3">
+				<input type="submit" name="submit" value="Add Item" class="btn btn-primary" disabled/>
+			</div>
+		</div>
+	</form>
+	<hr />
+	<ul class="list-group">
+		{% for item in items %}
+
+		{% if card.hide_completed ==  True %}
+
+			{% if item.is_active == True %}
+				<li class="list-group-item" value="{{ item.id }}">
+					{{ item.text }}
+					
+					<span class="float-right mx-1" name="edit-item" style="display:none;">
+						<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+						  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+						  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+						</svg>
+					</span>
+					<span class="float-right mx-1" name="complete-item" style="display:none;">
+						<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+						  <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+						  <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 0 0 3 14.5h10a1.5 1.5 0 0 0 1.5-1.5V8a.5.5 0 0 0-1 0v5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 0 0-1H3A1.5 1.5 0 0 0 1.5 3v10z"/>
+						</svg>
+					</span>					
+				</li>
+			{% endif %}
+
+		{% else %}
+		{% if item.is_active == True %}
+		<li class="list-group-item" value="{{ item.id }}">
+			{{ item.text }}
+
+					<span class="float-right mx-1" name="edit-item" style="display:none;">
+						<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+						  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+						  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+						</svg>
+					</span>
+					<span class="float-right mx-1" name="complete-item" style="display:none;">
+						<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+						  <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+						  <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 0 0 3 14.5h10a1.5 1.5 0 0 0 1.5-1.5V8a.5.5 0 0 0-1 0v5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 0 0-1H3A1.5 1.5 0 0 0 1.5 3v10z"/>
+						</svg>
+					</span>		
+		</li>
+
+		{% else %}
+		<li class="list-group-item" value="{{ item.id }}" style="text-decoration:line-through">{{ item.text }}</li>
+		{% endif %}
+		{% endif %}
+		{% empty %}
+		No items - add one!
+		{% endfor %}
+	</ul>
+	</div>
+	<div class="card-footer border border-top-0">
+		<div class="row">
+			<div class="col text-right">
+				&nbsp;<!-- <a href="#"><i class="fas fa-trash"></i></a> -->
+			</div>
+		</div>
+	</div>
+
+<!--
+<div class="col-2">
+	{% if dates.count > 0 %}
+	<h2>Dates Associated</h2>
+	<ul>
+	{% for date in dates %}
+	<li>{{date.date}}</li>
+	{% endfor %}
+	{% endif %}
+</ul>
+</div>
+-->
+<script src="{% static 'card_view.js' %}"></script>

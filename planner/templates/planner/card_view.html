@@ -1,0 +1,9 @@
+{% extends 'planner/layout.html' %}
+{% load static %}
+{% block title %}{{ card.title }}{% endblock %}
+{% block body %}
+<div class="container">
+{% include 'planner/date_field_modal.html' %}
+{% include 'planner/card_detail.html' %}
+</div>
+{% endblock %}
