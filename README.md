@@ -1,5 +1,9 @@
 # Planner
 
+## Live Preview
+
+[https://youtu.be/55Ie7KpHt9s](Youtube Video)
+
 ## Overview
 
 For my capstone project, I built a to-do list manager I called Planner. The web application allows the user to create and manage various lists, connect those lists to dates, and then edit and cross off items on lists. There are three main components to the application:
