@@ -2,7 +2,7 @@
 
 ## Live Preview
 
-[https://youtu.be/55Ie7KpHt9s](Youtube Video)
+[YouTube Video](https://youtu.be/55Ie7KpHt9s)
 
 ## Overview
 
